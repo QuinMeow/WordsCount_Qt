@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>751</width>
+    <height>704</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>691</width>
+      <height>621</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="2">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="BtnOpenFile">
+           <property name="text">
+            <string>打开文本(&amp;O)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="BtnClose">
+           <property name="text">
+            <string>关闭程序(&amp;E)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineWord">
+         <property name="placeholderText">
+          <string>输入想要查找的单词</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="BtnSearch">
+         <property name="text">
+          <string>查找单词(&amp;S)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetFixedSize</enum>
+         </property>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>单词数量：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labNumbers">
+           <property name="text">
+            <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QListWidget" name="listLocations"/>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>当前文本：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>308</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item row="1" column="0">
+      <widget class="QTextEdit" name="textOpened">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>751</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>BtnClose</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>546</x>
+     <y>50</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>309</x>
+     <y>43</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
