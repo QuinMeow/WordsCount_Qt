@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -73,7 +73,16 @@
          <item>
           <widget class="QLabel" name="labNumbers">
            <property name="text">
-            <string>TextLabel</string>
+            <string notr="true">0</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -152,8 +161,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>546</x>
-     <y>50</y>
+     <x>707</x>
+     <y>106</y>
     </hint>
     <hint type="destinationlabel">
      <x>309</x>

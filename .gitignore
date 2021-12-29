@@ -72,3 +72,7 @@ Thumbs.db
 *.exe
 
 debug/moc_predefs.h
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/WordsCount_Qt/v16/Browse.VC.db
+.vs/VSWorkspaceState.json
