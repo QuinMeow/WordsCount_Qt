@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     dic.ui=ui;
+    highlighter = new Highlighter(ui->textOpened->document());
 }
 
 MainWindow::~MainWindow()
@@ -18,28 +19,41 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_BtnOpenFile_clicked()
 {//Open File
+    dic.Empty();
     QString curPath = QDir::currentPath();
     QString dlgTitle="打开一个文件";
     QString filter="文本文件(*.txt);;所有文件(*.*)";
     QString aFileName=QFileDialog::getOpenFileName(this,dlgTitle,curPath,filter);
     if(aFileName.isEmpty())
         return;
+    if(dic.LoadFile(aFileName))
+    {
+        ui->BtnSearch->setEnabled(true);
+    }
 
-    dic.LoadFile(aFileName);
 
 }
 
 void MainWindow::on_BtnSearch_clicked()
 {
-    QString Q_word = ui->lineWord->text();
-    dic.Locate(Q_word.toStdString());
+    string word = ui->lineWord->text().toStdString();
+    regex word_reg("[a-z|A-Z]+");
+    if(regex_match(word,word_reg)) //正则匹配
+    {
+        dic.Locate(word);
+        highlighter->SetText(ui->lineWord->text());
+        highlighter->rehighlight();
+    }
+    else
+    {
+        QMessageBox::critical(this,"输入错误","请输入仅含有英文字符（a-z,A-Z）的单词",QMessageBox::Ok);
+    }
+
 }
 
 void Dictionary::Locate(string word) const
 {
     QString q_times;
-    //QTextStream outstream;
-    //outstream.setAutoDetectUnicode(true);
     QString outline;
     int pos = Hash(word);
     int layer = SearchHash(word);
@@ -47,16 +61,20 @@ void Dictionary::Locate(string word) const
     {
         q_times = q_times.asprintf("%d",HashTable[pos][layer].location.size());
         ui->labNumbers->setText(q_times);
+        ui->listLocations->clear(); //清空表单
         vector<pair<int, int>>::iterator location = HashTable[pos][layer].location.begin();
-        for (; location != HashTable[pos][layer].location.end(); ++location) //逐个输出位置    
+        for (; location != HashTable[pos][layer].location.end(); ++location) //逐个输出位置
         {
             outline.clear();
             QTextStream(&outline) << "Line " << location->first + 1 << " Word " << location->second + 1;
             ui->listLocations->addItem(outline);
         }
     }
-    //else
-        //cout << "The word \"" << word << "\" didn't been found!" << endl;
+    else
+    {
+        ui->labNumbers->setText("0");
+        ui->listLocations->clear();
+    }
 }
 
 void Dictionary::Empty()
@@ -105,7 +123,7 @@ int Dictionary::Hash(string& word) const
 {
     int seed = 31;
     int hash = 0;
-    int strln = word.length();
+    int strln = static_cast<int>(word.length());
     for (int i = 0; i < strln; i++)
         hash = (hash * seed + word[i]) % HASH_SIZE; //哈希算法
     return hash % HASH_SIZE;
@@ -148,6 +166,69 @@ int Dictionary::SearchHash(string& word) const
     return -1; //没有找到返回-1
 }
 
+/*void Dictionary::Highlight(QString &word) const
+{
+
+    QTextCharFormat myClassFormat;
+    myClassFormat.setFontWeight(QFont::Bold);
+    myClassFormat.setForeground(Qt::darkMagenta);
+
+    QString text = ui->textOpened->toPlainText();
+    QRegularExpression expression(word);
+    int index = 0,length = 0;
+    QRegularExpressionMatch match;
+    do
+    {
+        match = expression.match(text);
+        if(match.hasMatch())
+        {
+            index = match.capturedEnd();
+            length = match.capturedLength();
+
+
+
+        }
+        else
+            break;
+    }while(index < text.length());
+}*/
+
+Highlighter::Highlighter(QTextDocument *parent)
+    : QSyntaxHighlighter(parent)
+{
+
+}
+
+
+void Highlighter::highlightBlock(const QString &text)
+{
+    if(word_text.isEmpty())return;
+
+    QTextCharFormat myClassFormat;
+    myClassFormat.setFontWeight(QFont::Bold);
+    myClassFormat.setForeground(Qt::darkMagenta);
+    myClassFormat.setBackground(Qt::yellow);
+    QString pattern = word_text;
+
+    //QRegExp expression(pattern);
+    QRegularExpression expression(pattern);
+    QRegularExpressionMatchIterator i = expression.globalMatch(text);
+    while (i.hasNext())
+    {
+        QRegularExpressionMatch match = i.next();
+        setFormat(match.capturedStart(), match.capturedLength(), myClassFormat);
+    }
+}
+
+void Highlighter::SetText(QString text)
+{
+    word_text=text;
+    //word_text.insert(0,"(?![^a-z|^A-Z])");
+    //word_text.append("(?=[^a-z|^A-Z]+)");
+    word_text.insert(0,"\\b");
+    word_text.append("\\b");
+
+}
 
 
 

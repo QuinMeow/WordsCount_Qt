@@ -5,6 +5,13 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QTextStream>
+#include <QMessageBox>
+#include <QSyntaxHighlighter>
+#include <QTextCharFormat>
+#include <QRegExp>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QRegularExpressionMatchIterator>
 #include <string>
 #include <regex>
 #include <vector>
@@ -42,8 +49,21 @@ protected:
     int Hash(string& word) const; //生成哈希值
     void InsertHash(string word, int row, int col); //插入到哈希表并显示
     int SearchHash(string& word) const; //搜索哈希表
+    //void Highlight(QString &word) const;
 };
 
+class Highlighter : public QSyntaxHighlighter
+{
+    Q_OBJECT
+
+public:
+    Highlighter(QTextDocument *parent = 0);
+    void SetText(QString text);
+protected:
+    void highlightBlock(const QString &text) Q_DECL_OVERRIDE;
+
+    QString word_text;
+};
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -58,9 +78,11 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Dictionary dic;
-    bool openTextByIODevice(const QString &aFileName);
-    bool openTextByStream(const QString &aFileName);
+    Highlighter *highlighter;
+
+
 };
+
 
 
 
