@@ -48,6 +48,7 @@ protected:
     int Hash(string& word) const; //生成哈希值
     void InsertHash(string word, int row, int col); //插入到哈希表并显示
     int SearchHash(string& word) const; //搜索哈希表
+
 };
 
 class Highlighter : public QSyntaxHighlighter
@@ -57,10 +58,13 @@ class Highlighter : public QSyntaxHighlighter
 public:
     Highlighter(QTextDocument *parent = 0);
     void SetText(QString text);
+    void SetNum(int exec = -1);
 protected:
     void highlightBlock(const QString &text) Q_DECL_OVERRIDE;
 
     QString word_text;
+    int num;
+    int count;
 };
 class MainWindow : public QMainWindow
 {
@@ -73,6 +77,8 @@ public:
 private slots:
     void on_BtnOpenFile_clicked();
     void on_BtnSearch_clicked();
+    void on_listLocations_itemSelectionChanged();
+    void on_BtnHighlightAll_clicked();
 private:
     Ui::MainWindow *ui;
     Dictionary dic;

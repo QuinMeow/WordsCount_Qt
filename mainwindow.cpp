@@ -19,18 +19,21 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_BtnOpenFile_clicked()
 {//Open File
-    dic.Empty();
     QString curPath = QDir::currentPath();
     QString dlgTitle="打开一个文件";
     QString filter="文本文件(*.txt);;所有文件(*.*)";
     QString aFileName=QFileDialog::getOpenFileName(this,dlgTitle,curPath,filter);
     if(aFileName.isEmpty())
         return;
+    dic.Empty();
+    ui->textOpened->clear();
     if(dic.LoadFile(aFileName))
     {
         ui->BtnSearch->setEnabled(true);
+        ui->BtnHighlightAll->setEnabled(true);
+        highlighter->SetText(""); //重置查照词
+        highlighter->rehighlight();
     }
-
 
 }
 
@@ -49,6 +52,19 @@ void MainWindow::on_BtnSearch_clicked()
         QMessageBox::critical(this,"输入错误","请输入仅含有英文字符（a-z,A-Z）的单词",QMessageBox::Ok);
     }
 
+}
+
+void MainWindow::on_listLocations_itemSelectionChanged()
+{
+    highlighter->SetNum(ui->listLocations->currentRow());
+    highlighter->rehighlight();
+}
+
+void MainWindow::on_BtnHighlightAll_clicked()
+{
+    ui->listLocations->clearSelection();
+    highlighter->SetNum(-1);
+    highlighter->rehighlight(); 
 }
 
 void Dictionary::Locate(string word) const
@@ -100,7 +116,6 @@ bool Dictionary::LoadFile(QString &aFileName)
         return false;
     QTextStream aStream(&aFile);
     aStream.setAutoDetectUnicode(true);
-    //ui->textOpened->setPlainText(aStream.readAll());
 
     while (!aStream.atEnd()) //按换行符获取行
     {
@@ -170,7 +185,7 @@ int Dictionary::SearchHash(string& word) const
 Highlighter::Highlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
-
+    count = 0;
 }
 
 
@@ -187,22 +202,28 @@ void Highlighter::highlightBlock(const QString &text)
     //QRegExp expression(pattern);
     QRegularExpression expression(pattern);
     QRegularExpressionMatchIterator i = expression.globalMatch(text);
+
     while (i.hasNext())
     {
         QRegularExpressionMatch match = i.next();
-        setFormat(match.capturedStart(), match.capturedLength(), myClassFormat);
+        if(count == num ||num == -1)
+            setFormat(match.capturedStart(), match.capturedLength(), myClassFormat);
+        count+=1;
     }
 }
 
 void Highlighter::SetText(QString text)
 {
     word_text=text;
-    //word_text.insert(0,"(?![^a-z|^A-Z])");
-    //word_text.append("(?=[^a-z|^A-Z]+)");
+    num = -1;
     word_text.insert(0,"\\b");
     word_text.append("\\b");
 
 }
 
-
+void Highlighter::SetNum(int exec)
+{
+    num = exec;
+    count = 0;
+}
 
