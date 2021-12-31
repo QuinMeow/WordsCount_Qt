@@ -8,7 +8,6 @@
 #include <QMessageBox>
 #include <QSyntaxHighlighter>
 #include <QTextCharFormat>
-#include <QRegExp>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QRegularExpressionMatchIterator>
@@ -49,7 +48,6 @@ protected:
     int Hash(string& word) const; //生成哈希值
     void InsertHash(string word, int row, int col); //插入到哈希表并显示
     int SearchHash(string& word) const; //搜索哈希表
-    //void Highlight(QString &word) const;
 };
 
 class Highlighter : public QSyntaxHighlighter

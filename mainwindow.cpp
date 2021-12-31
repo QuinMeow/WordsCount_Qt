@@ -166,32 +166,6 @@ int Dictionary::SearchHash(string& word) const
     return -1; //没有找到返回-1
 }
 
-/*void Dictionary::Highlight(QString &word) const
-{
-
-    QTextCharFormat myClassFormat;
-    myClassFormat.setFontWeight(QFont::Bold);
-    myClassFormat.setForeground(Qt::darkMagenta);
-
-    QString text = ui->textOpened->toPlainText();
-    QRegularExpression expression(word);
-    int index = 0,length = 0;
-    QRegularExpressionMatch match;
-    do
-    {
-        match = expression.match(text);
-        if(match.hasMatch())
-        {
-            index = match.capturedEnd();
-            length = match.capturedLength();
-
-
-
-        }
-        else
-            break;
-    }while(index < text.length());
-}*/
 
 Highlighter::Highlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
