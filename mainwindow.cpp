@@ -95,7 +95,6 @@ void Dictionary::Locate(string word) const
 
 void Dictionary::Empty()
 {
-    map.clear();
     for (int i = 0; i < HASH_SIZE; i++)
         HashTable[i].clear();
 }

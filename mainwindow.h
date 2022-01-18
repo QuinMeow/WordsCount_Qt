@@ -42,11 +42,10 @@ public:
     bool LoadFile(QString &aFileName);
 
 protected:
-    vector<vector<string>> map; //邻接矩阵存储
     vector<HashNode>* HashTable; //散列表
 
     int Hash(string& word) const; //生成哈希值
-    void InsertHash(string word, int row, int col); //插入到哈希表并显示
+    void InsertHash(string word, int row, int col); //插入到哈希表
     int SearchHash(string& word) const; //搜索哈希表
 
 };
